@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NextHire</title>
+    <style>
+        /* Basic resets */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+        }
+
+        /* Header */
+        header {
+            background-color: #3bb9ff;
+            padding: 20px;
+            text-align: center;
+            position: relative;
+        }
+
+        header h1 {
+            color: white;
+            font-size: 2.5rem;
+            font-family: 'Arial', sans-serif;
+            letter-spacing: 5px;
+            animation: slideIn 1.5s ease-in-out;
+        }
+
+        /* Menu button */
+        .menu-btn {
+            position: absolute;
+            top: 25px;
+            right: 25px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 2rem;
+            color: white;
+        }
+
+        /* Grid Layout for Job Cards */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            padding: 40px;
+        }
+
+        /* Job card style */
+        .job-card {
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            text-align: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .job-card img {
+            margin-bottom: 70px;
+            width: 120px; /* Increased the width */
+            height: auto;
+        }
+
+        .job-card h2 {
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+        }
+
+        /* Hover effect on cards */
+        .job-card:hover {
+            transform: scale(1.05);
+            box-shadow: 0px 0px 25px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Apply Now button */
+        .apply-btn {
+            background-color: #3bb9ff;
+            border: none;
+            color: white;
+            padding: 10px 20px;
+            text-transform: uppercase;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background-color 0.3s ease;
+            margin-top: auto;
+        }
+
+        /* Hover effect on button */
+        .apply-btn:hover {
+            background-color: #1f7fb8;
+        }
+
+        /* Animations */
+        @keyframes slideIn {
+            0% {
+                transform: translateY(-100%);
+                opacity: 0;
+            }
+            100% {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        /* Responsive design for smaller screens */
+        @media screen and (max-width: 768px) {
+            .grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>NextHire</h1>
+    <button class="menu-btn">&#9776;</button>
+</header>
+
+<div class="grid">
+    <div class="job-card">
+        <img src="https://www.freepnglogos.com/uploads/microsoft-logo-4.png" alt="Microsoft Logo" width="80">
+        <h2>Software Engineer</h2>
+        <a href="form.html"><button class="apply-btn">Apply Now</button></a>
+    </div>
+    <div class="job-card">
+        <img src="https://logos-world.net/wp-content/uploads/2020/09/Google-Logo.png" alt="Google Logo" width="80">
+        <h2>Data Analytics</h2>
+        <a href="dataform.html"><button class="apply-btn">Apply Now</button></a>
+    </div>
+    <div class="job-card">
+        <img src="https://1000logos.net/wp-content/uploads/2021/08/Capgemini-Logo.png" alt="Microsoft Logo" width="80">
+        <h2>ML Expert</h2>
+        <a href="MLform.html"><button class="apply-btn">Apply Now</button></a>
+    </div>
+    <div class="job-card">
+        <img src="https://download.logo.wine/logo/Zoho_Corporation/Zoho_Corporation-Logo.wine.png" alt="Microsoft Logo" width="80">
+        <h2>Business Analytics</h2>
+        <a href="businessform.html"><button class="apply-btn">Apply Now</button></a>
+    </div>
+    <div class="job-card">
+        <img src="https://companieslogo.com/img/orig/TCS.NS-7401f1bd.png?t=1631949260" alt="Microsoft Logo" width="80">
+        <h2>Web Developer</h2>
+        <a href="webform.html"><button class="apply-btn">Apply Now</button></a>
+    </div>
+    <div class="job-card">
+        <img src="https://logos-world.net/wp-content/uploads/2021/03/Ford-Logo-1965-present.png" alt="Microsoft Logo" width="80">
+        <h2>Automobile Engineer</h2>
+        <a href="Automobileform.htm"l><button class="apply-btn">Apply Now</button></a>
+    </div>
+</div>
+
+<script>
+    // Menu button functionality
+    document.querySelector('.menu-btn').addEventListener('click', function () {
+        alert('Menu button clicked!');
+    });
+</script>
+
+</body>
+</html>
