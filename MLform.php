@@ -181,28 +181,9 @@
         </p>
     </section>
 
-    <section class="form-section">
-        <h2>Apply for this Job</h2>
-        <form id="job-form">
-            <label for="name">Full Name:</label>
-            <input type="text" id="name" name="name" placeholder="Enter your name" required>
-
-            <label for="email">Email Address:</label>
-            <input type="email" id="email" name="email" placeholder="Enter your email" required>
-
-            <label for="position">Position Applying For:</label>
-            <input type="text" id="position" name="position" value="ML Expert" readonly>
-
-            <label for="resume">Upload Resume:</label>
-            <input type="file" id="resume" name="resume" accept=".pdf, .docx" required>
-
-            <button type="submit" class="apply-btn">Submit Application</button>
-        </form>
-    </section>
-
-    <footer>
-        <p>NextHire &copy; 2024. All rights reserved.</p>
-    </footer>
+    <?php
+    include "form.php";
+    ?>
 
     <script>
         // Show a success message when the form is submitted
