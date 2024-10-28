@@ -1,9 +1,9 @@
 <?php
 // Database configuration
 $servername = "localhost";
-$username = "root";
-$password = "";
-$dbname = "members";
+$username = "root"; // Database username
+$password = ""; // Database password
+$dbname = "members"; // Database name
 
 // Create a database connection
 $conn = mysqli_connect($servername, $username, $password, $dbname);
@@ -15,46 +15,43 @@ if (!$conn) {
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Capture the form inputs and sanitize them
-    $user = mysqli_real_escape_string($conn, $_POST['username']);
-    $pass = mysqli_real_escape_string($conn, $_POST['password']);
+    $username = mysqli_real_escape_string($conn, $_POST['username']);
+    $password = mysqli_real_escape_string($conn, $_POST['password']);
     $user_id = mysqli_real_escape_string($conn, $_POST['user_id']);
 
-    // Define the SQL query to validate credentials
-    $stmt = "SELECT * FROM users WHERE username = '$user' AND password = '$pass' AND user_id = '$user_id'";
-    $result = mysqli_query($conn, $stmt);
+    // Check if the username or user_id already exists
+    $check_user = "SELECT * FROM users WHERE username = '$username' OR user_id = '$user_id'";
+    $result = mysqli_query($conn, $check_user);
 
-    // Check if credentials are correct
     if (mysqli_num_rows($result) > 0) {
-        // Start session and store user info
-        session_start();
-        $_SESSION['username'] = $user;
-        $_SESSION['user_id'] = $user_id;
-
-        // Redirect to dashboard
-        header("Location: dashboard.html");
-        exit();
+        echo "<p style='color: red;'>Username or User ID already exists. Please try again with different credentials.</p>";
     } else {
-        echo "<p style='color: red;'>Invalid credentials, please try again.</p>";
+        // Hash the password for security
+        $hashed_password = password_hash($password, PASSWORD_DEFAULT);
+
+        // Insert the new user into the database
+        $sql = "INSERT INTO users (username, pass, user_id) VALUES ('$username', '$hashed_password', '$user_id')";
+        
+        if (mysqli_query($conn, $sql)) {
+            // Redirect to login page after successful signup
+            header("Location: index.php");
+            exit();
+        } else {
+            echo "<p style='color: red;'>Error: " . mysqli_error($conn) . "</p>";
+        }
     }
 
-    // Close the connection
+    // Close the database connection
     mysqli_close($conn);
 }
 ?>
-
-
-
-
-
-
-
 
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login - NextHire</title>
+    <title>Sign Up - NextHire</title>
     <style>
         /* Basic resets */
         * {
@@ -72,8 +69,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             height: 100vh;
         }
 
-        /* Login container */
-        .login-container {
+        /* Signup container */
+        .signup-container {
             width: 100%;
             max-width: 400px;
             background-color: white;
@@ -84,15 +81,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
 
         /* Header */
-        .login-container h2 {
+        .signup-container h2 {
             margin-bottom: 20px;
             font-size: 2rem;
             color: #3bb9ff;
         }
 
         /* Input fields */
-        .login-container input[type="text"],
-        .login-container input[type="password"] {
+        .signup-container input[type="text"],
+        .signup-container input[type="password"] {
             width: 100%;
             padding: 12px;
             margin: 10px 0;
@@ -102,7 +99,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
 
         /* Submit button */
-        .login-container input[type="submit"] {
+        .signup-container input[type="submit"] {
             background-color: #3bb9ff;
             color: white;
             padding: 12px;
@@ -115,12 +112,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             width: 100%;
         }
 
-        .login-container input[type="submit"]:hover {
+        .signup-container input[type="submit"]:hover {
             background-color: #1f7fb8;
         }
 
         /* Small text below */
-        .login-container p {
+        .signup-container p {
             margin-top: 15px;
             color: #666;
             font-size: 0.9rem;
@@ -129,15 +126,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 </head>
 <body>
 
-<div class="login-container">
-    <h2>Login</h2>
-    <form action="dashboard.html" method="POST">
+<div class="signup-container">
+    <h2>Sign Up</h2>
+    <form action="signup.php" method="POST">
         <input type="text" name="username" placeholder="Username" required>
         <input type="password" name="password" placeholder="Password" required>
         <input type="text" name="user_id" placeholder="User ID" required>
-        <input type="submit" value="Login">
+        <input type="submit" value="Sign Up">
     </form>
-    <p>Don’t have an account? <a href="signup.html">Sign up</a></p>
+    <p>Already have an account? <a href="index.php">Login</a></p>
 </div>
 
 </body>

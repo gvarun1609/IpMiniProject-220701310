@@ -1,8 +1,8 @@
 <?php
+session_start(); // Start session to access user_id
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
-?>
-<?php
+
 // Database configuration
 $servername = "localhost";
 $username = "root";
@@ -16,38 +16,35 @@ $conn = mysqli_connect($servername, $username, $password, $dbname);
 if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
-echo $_POST['name'];
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $name = $_POST['name'];
     $email = $_POST['email'];
     $position = $_POST['position'];
+    $user_id = $_SESSION['user_id']; // Assuming user_id is stored in session
+
     // Handle file upload
-    $resume=$_FILES['resume'];
+    $resume = $_FILES['resume'];
     $resumeName = basename($resume['name']); // Get the file name
-    $targetDirectory = "C:\Users\gvaru\Downloads\ip mini project\\varun nexthire\local\\"; 
-    // Insert data into database
-    // $stmt = "insert into jobapplications (name, email, position) VALUES ('$name','$email','$position')";
+    $targetDirectory = "C:\\Users\\gvaru\\Downloads\\ip mini project\\varun nexthire\\local\\"; 
     $targetFilePath = $targetDirectory . $resumeName;
-    //Move the uploaded file to the target directory
+
+    // Move the uploaded file to the target directory
     if (move_uploaded_file($resume['tmp_name'], $targetFilePath)) {
-        // Insert data into the database (only the file name is saved)
-        $stmt = "INSERT INTO jobapplications (name, email, position, resume) VALUES ('$name', '$email', '$position', '$resumeName')";
+        // Insert data into the database (including user_id)
+        $stmt = "INSERT INTO jobapplications (name, email, position, resume, user_id) VALUES ('$name', '$email', '$position', '$resumeName', '$user_id')";
 
-
-    if ($conn->query($stmt)) {
-        echo "<p style='color: green;'>Your application has been submitted successfully!</p>";
+        if ($conn->query($stmt)) {
+            echo "<p style='color: green;'>Your application has been submitted successfully!</p>";
+        } else {
+            echo "<p style='color: red;'>Error: " . $conn->error . "</p>";
+        }
     } else {
-        echo "<p style='color: red;'>Error: " . $conn->error . "</p>";
-    }
-
-     //$stmt->close();
-} else {
-    echo "<p style='color: red;'>Error uploading resume file. Please try again.</p>";
+        echo "<p style='color: red;'>Error uploading resume file. Please try again.</p>";
     }
     $conn->close();
 }
 ?>
-
 
 <!DOCTYPE html>
 <html lang="en">
@@ -173,15 +170,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             }
         }
 
-        @keyframes growLine {
-            0% {
-                width: 0;
-            }
-            100% {
-                width: 30px;
-            }
-        }
-
         @keyframes slideDown {
             0% {
                 transform: translateY(-50px);
@@ -248,6 +236,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <label for="resume">Upload Resume:</label>
             <input type="file" id="resume" name="resume" accept=".pdf, .docx" required>
 
+            <input type="hidden" name="user_id" value="<?php echo $_SESSION['user_id']; ?>">
+
             <button type="submit" class="apply-btn">Submit Application</button>
         </form>
     </section>
@@ -257,12 +247,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     </footer>
 
     <script>
-        // Show a success message when the form is submitted
-       // document.getEleentById('job-form').addEventListener('submit', function(event) {
-       //     event.preventDefault();
-        //    alert('Your application has been submitted successfully!');
-        //});
+        // Optional: Show a success message when the form is submitted
+        // document.getElementById('job-form').addEventListener('submit', function(event) {
+        //     event.preventDefault();
+        //     alert('Your application has been submitted successfully!');
+        // });
     </script>
 </body>
 </html>
-
